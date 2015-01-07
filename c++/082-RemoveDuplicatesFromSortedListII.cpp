@@ -11,10 +11,13 @@ struct ListNode {
 class Solution {
 public:
     ListNode *deleteDuplicates(ListNode *head) {
-        ListNode *last = NULL, *current = head;
+        ListNode *fakeHead = new ListNode(0);
+        fakeHead->next = head;
+        
+        ListNode *previous = fakeHead, *current = head;
         while (current != NULL) {
-            bool duplicate = false;
             ListNode *nextNode = current->next;
+            bool duplicate = false;
             while (nextNode != NULL && nextNode->val == current->val) {
                 current->next = nextNode->next;
                 delete nextNode;
@@ -22,21 +25,16 @@ public:
                 duplicate = true;
             }
             if (duplicate) {
-                if (last == NULL) {
-                    head = nextNode;
-                } else {
-                    last->next = nextNode;
-                }
+                previous->next = nextNode;
                 delete current;
-                current = nextNode;
             } else {
-                if (last == NULL) {
-                    head = current;
-                }
-                last = current;
-                current = nextNode;
+                previous = current;
             }
+            current = nextNode;
         }
+        
+        head = fakeHead->next;
+        delete fakeHead;
         return head;
     }
 };
