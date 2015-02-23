@@ -36,20 +36,23 @@ public:
         }
         qsort(nums, 0, n - 1);
         
-        for (int i = 0, j = n - 1; i < n && i < j; i++) {
-            while (i < j && (long long)nums[i].number + nums[j].number > (long long)target) {
-                j--;
-            }
-            if (i < j && (long long)nums[i].number + nums[j].number == (long long)target) {
+        int i = 0, j = n - 1;
+        while (i < j) {
+            long long sum = (long long)nums[i].number + nums[j].number;
+            if (sum == target) {
                 int index1 = nums[i].index + 1;
                 int index2 = nums[j].index + 1;
                 if (index1 > index2) {
                     int temp = index1; index1 = index2; index2 = temp;
                 }
                 ans.push_back(index1);
-                ans.push_back(index2);
-                delete[] nums;
+                ans.push_back(index2);  
                 return ans;
+            } else 
+            if (sum < target) {
+                i++;
+            } else {
+                j--;
             }
         }
         
