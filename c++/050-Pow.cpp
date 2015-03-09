@@ -4,18 +4,17 @@ using namespace std;
 class Solution {
 public:
     double pow(double x, int n) {
+        if (x == 0) return 0;
         bool negative = (n < 0);
-        long long positive_n = abs((long long)n);
-        double base = x, ans = 1.0;
-        while (positive_n > 0) {
-            if ( positive_n&1 ) {
-                ans *= base;
+        double ans = 1.0;
+        while (n != 0) {
+            if (n & 1) {
+                ans = ans * x;
             }
-            positive_n = positive_n >> 1;
-            base *= base;
+            x *= x;
+            n /= 2;
         }
-        if (negative) ans = 1.0 / ans;
-        return ans;
+        return negative ? 1.0 / ans : ans;
     }
 };
 
