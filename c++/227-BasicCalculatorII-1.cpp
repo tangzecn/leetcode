@@ -1,13 +1,13 @@
 #include<iostream>
-#include<vector>
 #include<string>
+#include<vector>
 #include<stack>
 using namespace std;
 
 class Solution {
 public:
     // Shunting-yard algorithm, from infix expression to postfix expression 
-    // Support +, -, *, / and ()
+    // Support +, -, *, / but not ()
     int calculate(string s) {
         vector<string> postfix;
         getPostfix(postfix, s);
@@ -20,28 +20,19 @@ private:
         stack<char> ops;
         while (i < s.length()) {
             if (s[i] == ' ') {
-                i++; continue;
+                i++; 
+                continue;
             } else if (isdigit(s[i])) {
                 int j = i;
                 while (j < s.length() && isdigit(s[j])) j++;
                 postfix.push_back(s.substr(i, j - i));
                 i = j;
-            } else if (s[i] == '(') {
-                ops.push(s[i]);
-                i++; 
-            } else if (s[i] == ')') {
-                while (ops.top() != '(') {
-                    postfix.push_back(string(1, ops.top()));
-                    ops.pop();
-                }
-                ops.pop();
-                i++;
             } else {
                 while (!ops.empty() && getPrecedence(ops.top()) >= getPrecedence(s[i])) {
                     postfix.push_back(string(1, ops.top()));
                     ops.pop();
                 }
-                ops.push(s[i]); 
+                ops.push(s[i]);
                 i++;
             }
         }
@@ -72,17 +63,15 @@ private:
     
     int getPrecedence(char op) {
         switch (op) {
-            case '(' : return 0;
             case '+' :
             case '-' : return 1;
             case '*' :
             case '/' : return 2;
         }
-	// should not reach here
         return -1;
     }
 };
 
 int main() {
-	return 0;
+    return 0;
 }
