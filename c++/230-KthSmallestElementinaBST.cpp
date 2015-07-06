@@ -11,9 +11,9 @@ struct TreeNode {
 
 class Solution {
 public:
-	// If add a field called nNode in Treenode to indicate the
-	// amount of nodes in current subtree, the time complexity
-	// can be reduced to O(height of BST).
+    // If add a field called nNode in Treenode to indicate the
+    // amount of nodes in current subtree, the time complexity
+    // can be reduced to O(height of BST).
     int kthSmallest(TreeNode* root, int k) {
         int res = find(root, k);
         return (k == 0) ? res : -1; 
