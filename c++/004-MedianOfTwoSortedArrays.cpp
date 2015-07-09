@@ -3,33 +3,31 @@ using namespace std;
 
 class Solution {
 public:
-    double findMedianSortedArrays(int A[], int m, int B[], int n) {
-        if ((n + m) % 2 == 1) {
-            return findNum(A, m, B, n, (n + m + 1) / 2);
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size(), m = nums2.size();
+        if ((n + m) & 1) {
+            return findMedian(nums1.begin(), nums2.begin(), n, m, (n + m + 1) >> 1);
         } else {
-            return (findNum(A, m, B, n, (n + m) / 2) + findNum(A, m, B, n, (n + m) / 2 + 1)) / 2;
+            return double(findMedian(nums1.begin(), nums2.begin(), n, m, (n + m) >> 1) + 
+                findMedian(nums1.begin(), nums2.begin(), n, m, (n + m + 2) >> 1)) / 2.0;
         }
     }
     
-    double findNum(const int *a, const int m, const int *b, const int n, const int k) {
-        if (m > n) {
-            return findNum(b, n, a, m, k);
-        } else 
-        if (m == 0) {
-            return b[k - 1];
-        } else
-        if (k == 1) {
-            return a[0] < b[0] ? a[0] : b[0];
-        } else {
-            int pa = min(k / 2, m), pb = k - pa;
-            int numa = a[pa - 1], numb = b[pb - 1];
-            if (numa < numb) {
-                return findNum(a + pa, m - pa, b, n, k - pa);
-            } else 
-            if (numa > numb) {
-                return findNum(a, m, b + pb, n - pb, k - pb);
+    int findMedian(vector<int>::iterator num1, vector<int>::iterator num2, int n, int m, int k) {
+        if (n > m) return findMedian(num2, num1, m, n, k);
+        else
+        if (n == 0) return *(num2 + k - 1);
+        else
+        if (k == 1) return min(*num1, *num2);
+        else {
+            int n1 = (k / 2 <= n) ? k / 2 : n;
+            int m1 = k - n1;
+            if ((*(num1 + n1 - 1)) < (*(num2 + m1 - 1))) {
+                return findMedian(num1 + n1, num2, n - n1, m, k - n1);
+            } else if ((*(num1 + n1 - 1)) > (*(num2 + m1 - 1))) {
+                return findMedian(num1, num2 + m1, n, m - m1, k - m1);
             } else {
-                return numa;
+                return *(num1 + n1 - 1);
             }
         }
     }
