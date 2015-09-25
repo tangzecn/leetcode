@@ -77,12 +77,11 @@ private:
                 currNode = iter->second;
             }
         }
-        if (currNode->wordIndex < 0) {
-            currNode->wordIndex = wordIndex;
-            while (currNode != NULL) {
-                currNode->nWord++;
-                currNode = currNode->parent;
-            }
+        
+        currNode->wordIndex = wordIndex;
+        while (currNode != NULL) {
+            currNode->nWord++;
+            currNode = currNode->parent;
         }
     }
     
