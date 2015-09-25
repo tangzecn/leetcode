@@ -6,10 +6,12 @@ using namespace std;
 
 class TrieNode {
 public:
-    TrieNode() : wordIndex(-1), nWord(0), parent(NULL) {}
+    TrieNode() : wordIndex(-1), nWord(0), nPrefix(0), parent(NULL) {}
     
     unordered_map<char, TrieNode*> sons;
-    int wordIndex, nWord;
+    int wordIndex; // The index of this word in the dict.
+    int nWord; // How many words which represent by this node have not been matched.
+    int nPrefix; // How many words which contain this prefix have not been matched.
     TrieNode *parent;
 };
 
@@ -37,15 +39,15 @@ private:
         auto iter = lastNode->sons.find(board[x][y]);
         if (iter == lastNode->sons.end()) return;
         TrieNode *currNode = iter->second;
-        if (currNode->nWord <= 0) return;
+        if (currNode->nPrefix <= 0) return;
         
-        if (currNode->wordIndex >= 0) {
+        if (currNode->nWord > 0) {
+            currNode->nWord--;
             res.push_back(words[currNode->wordIndex]);
-            currNode->wordIndex = -1;
             
             TrieNode *node = currNode;
             while (node != NULL) {
-                node->nWord--;
+                node->nPrefix--;
                 node = node->parent;
             }
         }
@@ -78,11 +80,24 @@ private:
             }
         }
         
-        currNode->wordIndex = wordIndex;
-        while (currNode != NULL) {
+        if (currNode->wordIndex < 0) {
+            currNode->wordIndex = wordIndex;
             currNode->nWord++;
+            while (currNode != NULL) {
+                currNode->nPrefix++;
+                currNode = currNode->parent;
+            }
+        }
+        // Change the if statement above to this block if the same strings 
+        // in dict are treated as different words.
+        /*
+        currNode->wordIndex = wordIndex;
+        currNode->nWord++;
+        while (currNode != NULL) {
+            currNode->nPrefix++;
             currNode = currNode->parent;
         }
+        */
     }
     
     void deleteTree(TrieNode *currNode) {
