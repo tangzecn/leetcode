@@ -1,15 +1,19 @@
-#include<cmath>
 #include<iostream>
 using namespace std;
 
+#define MAX_NUM INT_MAX
+#define MIN_NUM INT_MIN
+
+typedef int t_num;
+
 class Solution {
 public:
-    int reverse(int x) {
-        if (x <= INT_MIN) return 0;
-        int ans = 0, tmp = abs(x);
+	t_num reverse(t_num x) {
+        if (x <= MIN_NUM) return 0;
+        t_num ans = 0, tmp = x < 0 ? -x : x;
         while (tmp > 0) {
-            int lastDigit = tmp % 10;
-            if (ans > (INT_MAX - lastDigit) / 10) return 0;
+        	t_num lastDigit = tmp % 10;
+            if (ans > (MAX_NUM - lastDigit) / 10) return 0;
             ans = ans * 10 + lastDigit;
             tmp /= 10;
         }
