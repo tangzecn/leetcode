@@ -12,7 +12,7 @@ public:
         if (x <= MIN_NUM) return 0;
         t_num ans = 0, tmp = x < 0 ? -x : x;
         while (tmp > 0) {
-        	t_num lastDigit = tmp % 10;
+            t_num lastDigit = tmp % 10;
             if (ans > (MAX_NUM - lastDigit) / 10) return 0;
             ans = ans * 10 + lastDigit;
             tmp /= 10;
