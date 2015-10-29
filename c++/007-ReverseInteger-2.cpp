@@ -8,7 +8,7 @@ typedef int t_num;
 
 class Solution {
 public:
-	t_num reverse(t_num x) {
+    t_num reverse(t_num x) {
         if (x <= MIN_NUM) return 0;
         t_num ans = 0, tmp = x < 0 ? -x : x;
         while (tmp > 0) {
