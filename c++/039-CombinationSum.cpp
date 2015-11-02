@@ -2,20 +2,13 @@
 #include<vector>
 using namespace std;
 
-class Compare {
-public:
-    bool operator() (const int x, const int y) {
-        return x < y;
-    }
-} compare;
-
 class Solution {
 public:
     vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
         vector<int> solution;
         vector<vector<int> > ans;
         if (candidates.size() > 0) {
-            std::sort(candidates.begin(), candidates.end(), compare);
+            std::sort(candidates.begin(), candidates.end());
         }
         combinationSum(candidates, target, 0, ans, solution);
         return ans;
@@ -31,9 +24,11 @@ public:
             return;
         }        
         if (candidates[level] <= target) {
-            solution.push_back(candidates[level]);
-            combinationSum(candidates, target - candidates[level], level, ans, solution);
-            solution.erase(solution.end() - 1);
+            if (level == 0 || candidates[level] != candidates[level - 1]) {
+                solution.push_back(candidates[level]);
+                combinationSum(candidates, target - candidates[level], level, ans, solution);
+                solution.erase(solution.end() - 1);
+            }
             combinationSum(candidates, target, level + 1, ans, solution);
         }
     }
