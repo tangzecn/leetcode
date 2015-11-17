@@ -6,7 +6,7 @@ using namespace std;
 
 class Solution {
 public:
-    vector<string> anagrams(vector<string> &strs) {
+    vector<vector<string> > groupAnagrams(vector<string>& strs) {
         unordered_map<string, vector<string> > strMap;
         for (int i=0; i<strs.size(); i++) {
             string keyStr = strs[i];
@@ -16,14 +16,11 @@ public:
             strMap[keyStr].push_back(strs[i]);
         }
         
-        vector<string> ans;
+        vector<vector<string> > ans;
         unordered_map<string, vector<string> >::iterator it = strMap.begin();
         while (it != strMap.end()) {
-            if (it->second.size() > 1) {
-                for (int i=0; i<it->second.size(); i++) {
-                    ans.push_back(it->second[i]);
-                }
-            }    
+            sort(it->second.begin(), it->second.end());
+            ans.push_back(it->second);
             it++;
         }
         return ans;
