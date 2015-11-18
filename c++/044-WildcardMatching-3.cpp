@@ -1,55 +1,52 @@
 #include<iostream>
 #include<vector>
-#include<cstring>
+#include<string>
 using namespace std;
 
 class Solution {
 public:
     // Greedy + KMP, real O(N+M)
-    bool isMatch(const char *s, const char *p) {
-        if (s == NULL || p == NULL) return false;
-        
-        int lens = strlen(s), lenp = strlen(p);
-        
-        while (lens > 0 && lenp > 0 && (s[lens - 1] == p[lenp - 1] || p[lenp - 1] == '?')) {
-            lens--; lenp--;
+    bool isMatch(string s, string p) {
+        // match right most part
+        int lenS = s.length(), lenP = p.length();
+        while (lenS > 0 && lenP > 0 && (s[lenS - 1] == p[lenP - 1] || p[lenP - 1] == '?')) {
+            lenS--; lenP--;
         }
         // there is no '*' in p
-        if (lenp == 0) {
-            return lens == 0;
+        if (lenP == 0) {
+            return lenS == 0;
         } else {
-            if (p[lenp - 1] != '*') return false;
+            if (p[lenP - 1] != '*') return false;
         }
         
-        const char *points = s, *pointp = p;
-        while (lenp > 0) {
-            int keyLen = 0;
-            while (*pointp != '*') {
-                keyLen++;
-                pointp++;
-                lenp--;
+        // gready+kmp algorithm, match left most and between '*' parts
+        int is = 0, ip = 0;
+        while (ip < lenP) {
+            int lenSubP = 0;
+            while (p[ip + lenSubP] != '*') {
+                lenSubP++;
             }
-            if (keyLen > 0) {
-                int matchPos = kmp(points, lens, pointp - keyLen, keyLen);
-                if (matchPos < 0 || (pointp - keyLen == p && matchPos != keyLen)) {
+            if (lenSubP > 0) {
+                int matchPos = kmp(s, is, lenS - is, p, ip, lenSubP);
+                // not match or not match on position 0 for the first segment
+                if (matchPos < 0 || (ip == 0 && matchPos != 0)) {
                     return false; 
                 } else {
-                    points += matchPos;
-                    lens -= matchPos;
+                    is += matchPos + lenSubP;
                 }
             }
-            pointp++;
-            lenp--;
+            ip += lenSubP + 1;
         }
         return true;
     }
     
-    int kmp(const char* s, int lens, const char *p, int lenp) {
-        vector<int> next(lenp);
+    // find subP matching in subS
+    int kmp(const string&s, int is, int lenSubS, const string &p, int ip, int lenSubP) {
+        vector<int> next(lenSubP);
         next[0] = -1;
         int i = 0, j = -1;
-        while (i < lenp - 1) {
-            if (j < 0 || p[i] == p[j] || p[j] == '?') {
+        while (i < lenSubP - 1) {
+            if (j < 0 || p[ip + i] == p[ip + j] || p[ip + j] == '?') {
                 i++; j++;
                 next[i] = j;
             } else {
@@ -57,14 +54,14 @@ public:
             }
         }
         i = -1; j = -1;
-        while (i < lens && j <lenp) {
-            if (j < 0 || s[i] == p[j] || p[j] == '?') {
+        while (i < lenSubS && j < lenSubP) {
+            if (j < 0 || s[is + i] == p[ip + j] || p[ip + j] == '?') {
                 i++; j++;
             } else {
                 j = next[j];
             }
         }
-        if (j >= lenp) return i; else return -1;
+        if (j == lenSubP) return i - lenSubP; else return -1;
     }
 };
 

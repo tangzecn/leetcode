@@ -6,10 +6,8 @@ using namespace std;
 class Solution {
 public:
     // DP, O(NM)
-    bool isMatch(const char *s, const char *p) {
-        if (s == NULL || p == NULL) return false;
-        
-        int lens = strlen(s), lenp = strlen(p);
+    bool isMatch(string s, string p) {
+        int lens = s.length(), lenp = p.length();
         
         // for special data, cheating here
         int count = 0;
@@ -45,7 +43,7 @@ public:
                 f[0][j] = f[1][j];
         }
         return f[0][lens];
-    }
+    }  
 };
 
 int main() {

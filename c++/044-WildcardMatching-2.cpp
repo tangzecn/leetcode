@@ -5,10 +5,8 @@ using namespace std;
 class Solution {
 public:
     // Greedy, fake O(n + m)
-    bool isMatch(const char *s, const char *p) {
-        if (s == NULL || p == NULL) return false;
-        
-        int lens = strlen(s), lenp = strlen(p);
+    bool isMatch(string s, string p) {
+        int lens = s.length(), lenp = p.length();
         int indexs = 0, indexp = 0;
         int lastStar = -1, matchStart = -1;
         while (indexs < lens) {
@@ -32,7 +30,7 @@ public:
             indexp++;
         }
         return (indexp == lenp);
-    }
+    }  
 };
 
 int main() {
