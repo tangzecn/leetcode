@@ -2,6 +2,15 @@
 #include<vector>
 using namespace std;
 
+/*
+  Add a leading and ending 1 to nums. Let's call the new list nums_new. 
+  Suppose f[i][j] (j - i >= 2) means burst the balloons between (i, j) 
+  to gain the maximal score. 
+  Then f[i][j] = max{ 
+    f[i][k] + f[k][j] + nums_new[i] * nums_new[k] * nums_new[j] }
+    ( where i < k < j )
+  The answer is f[0][news_new.size() - 1] 
+*/
 class Solution {
 public:
     int maxCoins(vector<int>& nums) {
