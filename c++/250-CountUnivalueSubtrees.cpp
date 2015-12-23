@@ -24,7 +24,6 @@ private:
             if (node->left != nullptr) {
                 bool isLeftUnival = univalSubtree(node->left, res);
                 isUnivalSubtree = isUnivalSubtree && isLeftUnival && (node->val == node->left->val);
-                                  
             }
             if (node->right != nullptr) {
                 bool isRightUnival = univalSubtree(node->right, res);
