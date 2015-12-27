@@ -60,6 +60,10 @@ public:
         return queryTreeX(rootx, row1, row2, col1, col2);
     }
     
+    ~NumMatrix() {
+        destroyTreeX(rootx);    
+    }
+    
 private:
     TNodeX* rootx;
     vector<vector<int> > matrix;
@@ -148,6 +152,21 @@ private:
         } else {
             return queryTreeY(nodey->left, low, high) + queryTreeY(nodey->right, low, high);
         }
+    }
+    
+    void destroyTreeX(TNodeX *nodex) {
+        if (nodex == nullptr) return;
+        destroyTreeX(nodex->left);
+        destroyTreeX(nodex->right);
+        destroyTreeY(nodex->rooty);
+        delete nodex;
+    }
+    
+    void destroyTreeY(TNodeY *nodey) {
+        if (nodey == nullptr) return;
+        destroyTreeY(nodey->left);
+        destroyTreeY(nodey->right);
+        delete nodey;
     }
     
     inline int getMid(int low, int high) {
