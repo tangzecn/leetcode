@@ -20,6 +20,7 @@ public:
             for (int j=0; j<m; j++) {
                 if (grid[i][j] == '1') {
                     ans++;
+                    grid[i][j] = '3';
                     qx.push(i); qy.push(j);
                     while (!qx.empty()) {
                         for (int k=0; k<4; k++) {

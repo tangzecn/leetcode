@@ -6,7 +6,7 @@ using namespace std;
 class Solution {
 public:
     bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
-        if (t < 0) return false;
+        if (t < 0 || k <= 0) return false;
         unordered_map<int, int> hashMap;
         for (int i=0; i<nums.size(); i++) {
             int j = i - k - 1;
